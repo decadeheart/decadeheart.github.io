@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="vue," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文会使用vue搭建一个简单单页应用，并且使用webpack打包，使用express框架服务，并使用mongodb管理数据存储，在服务器端部署，可以实现ip访问  项目效果预览 http:&#x2F;&#x2F;119.29.208.124:8080&#x2F;#&#x2F; 环境前提 Node.js (&gt;&#x3D;4.x, 6.x preferred), npm version 3+ and Git. 不论是本地开发还是服务器部署，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue、webpack、express、mongodb搭建简单跑通全栈项目">
+<meta property="og:url" content="https://decadeheart.github.io/2020/10/19/vue%E3%80%81webpack%E3%80%81express%E3%80%81mongodb%E6%90%AD%E5%BB%BA%E7%AE%80%E5%8D%95%E8%B7%91%E9%80%9A%E5%85%A8%E6%A0%88%E9%A1%B9%E7%9B%AE/index.html">
+<meta property="og:site_name" content="擎烛而走">
+<meta property="og:description" content="本文会使用vue搭建一个简单单页应用，并且使用webpack打包，使用express框架服务，并使用mongodb管理数据存储，在服务器端部署，可以实现ip访问  项目效果预览 http:&#x2F;&#x2F;119.29.208.124:8080&#x2F;#&#x2F; 环境前提 Node.js (&gt;&#x3D;4.x, 6.x preferred), npm version 3+ and Git. 不论是本地开发还是服务器部署，">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4958474-953bcb50323ee13b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4958474-94cf678da54a8375.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4958474-447693fac7933236.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4958474-27646cff4bca06a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4958474-fdeca4ef9eecec27.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4958474-a71dff1975f7d1af.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4958474-4bf0a401430b1f31.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4958474-7c3fa20caa07871c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4958474-722cce00f6e535f8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4958474-56f020e1b465e96e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4958474-91772392d7e628b7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="article:published_time" content="2020-10-19T01:58:47.790Z">
+<meta property="article:modified_time" content="2020-10-19T02:04:35.885Z">
+<meta property="article:author" content="Decade">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/4958474-953bcb50323ee13b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://decadeheart.github.io/2020/10/19/vue、webpack、express、mongodb搭建简单跑通全栈项目/"/>
+
+
+
+
+
+  <title>vue、webpack、express、mongodb搭建简单跑通全栈项目 | 擎烛而走</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?462e83e6fe5b01dd8d53e5054f941abc";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">擎烛而走</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">虽千万里，吾往矣</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://decadeheart.github.io/2020/10/19/vue%E3%80%81webpack%E3%80%81express%E3%80%81mongodb%E6%90%AD%E5%BB%BA%E7%AE%80%E5%8D%95%E8%B7%91%E9%80%9A%E5%85%A8%E6%A0%88%E9%A1%B9%E7%9B%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Decade">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/123.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="擎烛而走">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vue、webpack、express、mongodb搭建简单跑通全栈项目</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-19T09:58:47+08:00">
+                2020-10-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BB%BA%E7%AB%99/" itemprop="url" rel="index">
+                    <span itemprop="name">建站</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/10/19/vue%E3%80%81webpack%E3%80%81express%E3%80%81mongodb%E6%90%AD%E5%BB%BA%E7%AE%80%E5%8D%95%E8%B7%91%E9%80%9A%E5%85%A8%E6%A0%88%E9%A1%B9%E7%9B%AE/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/10/19/vue%E3%80%81webpack%E3%80%81express%E3%80%81mongodb%E6%90%AD%E5%BB%BA%E7%AE%80%E5%8D%95%E8%B7%91%E9%80%9A%E5%85%A8%E6%A0%88%E9%A1%B9%E7%9B%AE/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/10/19/vue%E3%80%81webpack%E3%80%81express%E3%80%81mongodb%E6%90%AD%E5%BB%BA%E7%AE%80%E5%8D%95%E8%B7%91%E9%80%9A%E5%85%A8%E6%A0%88%E9%A1%B9%E7%9B%AE/" class="leancloud_visitors" data-flag-title="vue、webpack、express、mongodb搭建简单跑通全栈项目">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://upload-images.jianshu.io/upload_images/4958474-953bcb50323ee13b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="project.png"></p>
+<blockquote>
+<p>本文会使用vue搭建一个简单单页应用，并且使用webpack打包，使用express框架服务，并使用mongodb管理数据存储，在服务器端部署，可以实现ip访问</p>
+</blockquote>
+<p>项目效果预览</p>
+<p><a href="http://119.29.208.124:8080/#/" target="_blank" rel="noopener">http://119.29.208.124:8080/#/</a></p>
+<h2 id="环境前提"><a href="#环境前提" class="headerlink" title="环境前提"></a>环境前提</h2><p> <a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a> (&gt;=4.x, 6.x preferred), npm version 3+ and <a href="https://git-scm.com/" target="_blank" rel="noopener">Git</a>.</p>
+<p>不论是本地开发还是服务器部署，都需要node环境，次处就不细讲如何在windows和linux配置nodejs环境了</p>
+<h2 id="1-vue-cli快速搭建项目"><a href="#1-vue-cli快速搭建项目" class="headerlink" title="1.vue-cli快速搭建项目"></a>1.vue-cli快速搭建项目</h2><p>安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g vue-cli</span><br></pre></td></tr></table></figure>
+<p>创建集成了webpack的项目</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue init webpack my-project</span><br></pre></td></tr></table></figure>
+<p>接下来会进入安装阶段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Project name (my-project) </span><br><span class="line">&#x2F;&#x2F;项目名称，可以自己指定，也可直接回车，按照括号中默认名字（注意这里的名字不能有大写字母，如果有会报错Sorry, name &#x2F;&#x2F;can no longer contain capital letters），阮一峰老师博客为什么文件名要小写 ，可以参考一下。</span><br><span class="line">Project description (A Vue.js project)  &#x2F;&#x2F;项目描述，也可直接点击回车，使用默认名字</span><br><span class="line">Author (...) </span><br><span class="line">&#x2F;&#x2F;选择部分</span><br><span class="line">Runtime + Compiler: recommended for most users    &#x2F;&#x2F;运行加编译，推荐选择</span><br><span class="line">Install vue-router? (Y&#x2F;n)  &#x2F;&#x2F;是否安装vue-router，这是官方的路由,比较适合构建单页应用，于是我在此处选择了使用</span><br><span class="line">Use ESLint to lint your code? (Y&#x2F;n)    &#x2F;&#x2F;是否使用ESLint管理代码，ESLint是个代码风格管理工具，是用来统一代码风格，新手建议不用，不然回多出来很多语法上不规范而引起的错误</span><br><span class="line">Setup unit tests with Karma + Mocha? (Y&#x2F;n)  &#x2F;&#x2F;是否安装单元测试，此项目没用到</span><br><span class="line"></span><br><span class="line">Setup e2e tests with Nightwatch(Y&#x2F;n)?     &#x2F;&#x2F;是否安装e2e测试 ，此项目没用到</span><br></pre></td></tr></table></figure>
+<p><img src="http://upload-images.jianshu.io/upload_images/4958474-94cf678da54a8375.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="project.png"></p>
+<ul>
+<li>build目录 npm build *运行时执行的文件存放在此处，还有很重要的webpack配置文件</li>
+<li>config目录 确定了执行run dev 和run build时的一些配置文件</li>
+<li>dist目录 存放的是build命令执行后生成的产品文件</li>
+<li>node_modules目录 存放的是依赖</li>
+<li>src目录 存放的就是源码</li>
+</ul>
+<p>在cmd里面切换到项目目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd my-project</span><br></pre></td></tr></table></figure>
+<p>安装依赖，此时才会生成node_modules目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<p>这个命令会自动读取package.json里面含有的所有的依赖信息和版本</p>
+<p>等待安装完毕，就可以尝试启动项目了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
+<p>这个时候，会自动拉起浏览器，自主访问http:\\\localhost:8080</p>
+<p>此时，在这个页面会出现一个vue的默认界面<br><img src="http://upload-images.jianshu.io/upload_images/4958474-447693fac7933236.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="vue.png"></p>
+<p>此处建议使用chrome浏览器，安装一个vue-tool插件，会比较方便的进行vue开发</p>
+<p>接下来就可以进入到我们的项目开发阶段</p>
+<h2 id="2-完成本地环境下项目开发"><a href="#2-完成本地环境下项目开发" class="headerlink" title="2.完成本地环境下项目开发"></a>2.完成本地环境下项目开发</h2><p>由于涉及到xhr请求，所以还需要下载vue-resource,样式方面选择了bootstrap框架，所以先安装依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i vue-resource bootstrap --save</span><br></pre></td></tr></table></figure>
+<p>然后我们需要在main.js中引入我们的依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; The Vue build version to load with the &#96;import&#96; command</span><br><span class="line">&#x2F;&#x2F; (runtime-only or standalone) has been set in webpack.base.conf with an alias.</span><br><span class="line">import Vue from &#39;vue&#39;</span><br><span class="line">import App from &#39;.&#x2F;App&#39;</span><br><span class="line">import router from &#39;.&#x2F;router&#39;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;需要我们引入的</span><br><span class="line">import VueResource from &#39;vue-resource&#39;</span><br><span class="line">import &#39;bootstrap&#x2F;dist&#x2F;css&#x2F;bootstrap.css&#39;</span><br><span class="line">import &#39;bootstrap&#x2F;dist&#x2F;js&#x2F;bootstrap.js&#39;</span><br><span class="line">Vue.use(VueResource);</span><br><span class="line"></span><br><span class="line">Vue.config.productionTip &#x3D; false</span><br><span class="line"></span><br><span class="line">&#x2F;* eslint-disable no-new *&#x2F;</span><br><span class="line">new Vue(&#123;</span><br><span class="line">  el: &#39;#app&#39;,</span><br><span class="line">  router,</span><br><span class="line">  template: &#39;&lt;App&#x2F;&gt;&#39;,</span><br><span class="line">  components: &#123; App &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="2-1统一部分编写"><a href="#2-1统一部分编写" class="headerlink" title="2.1统一部分编写"></a>2.1统一部分编写</h3><p>我们可以看到src源码目录的结构如下</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4958474-27646cff4bca06a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="dir.png"></p>
+<p>我们可以把app.vue当做是主组件，其他组件的入口，所以在app.vue编写的部分，在每个路由下的页面都会存在</p>
+<p>，我们可以在此处，为我们的项目编写一个导航栏和页脚</p>
+<p>此时的app.vue</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id&#x3D;&quot;wrapper&quot;&gt;</span><br><span class="line">    &lt;nav class&#x3D;&quot;navbar navbar-default&quot;&gt;</span><br><span class="line">      &lt;div class&#x3D;&quot;container&quot;&gt;</span><br><span class="line">        &lt;div class&#x3D;&quot;navbar-header&quot;&gt;</span><br><span class="line">          &lt;button type&#x3D;&quot;button&quot; class&#x3D;&quot;navbar-toggle collapsed&quot; data-toggle&#x3D;&quot;collapse&quot; data-target&#x3D;&quot;#bs-example-navbar-collapse-1&quot; aria-expanded&#x3D;&quot;false&quot;&gt;</span><br><span class="line">            &lt;span class&#x3D;&quot;sr-only&quot;&gt;Toggle navigation&lt;&#x2F;span&gt;</span><br><span class="line">            &lt;span class&#x3D;&quot;icon-bar&quot;&gt;&lt;&#x2F;span&gt;</span><br><span class="line">            &lt;span class&#x3D;&quot;icon-bar&quot;&gt;&lt;&#x2F;span&gt;</span><br><span class="line">            &lt;span class&#x3D;&quot;icon-bar&quot;&gt;&lt;&#x2F;span&gt;</span><br><span class="line">          &lt;&#x2F;button&gt;</span><br><span class="line">          &lt;a class&#x3D;&quot;navbar-brand&quot; href&#x3D;&quot;&#x2F;home&quot;&gt;</span><br><span class="line">            &lt;i class&#x3D;&quot;glyphicon glyphicon-check&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">            丁丁</span><br><span class="line">          &lt;&#x2F;a&gt;</span><br><span class="line">        &lt;&#x2F;div&gt;</span><br><span class="line">        &lt;div class&#x3D;&quot;collapse navbar-collapse&quot; id&#x3D;&quot;bs-example-navbar-collapse-1&quot;&gt;</span><br><span class="line">          &lt;ul class&#x3D;&quot;nav navbar-nav&quot; &gt;</span><br><span class="line">            &lt;li&gt;&lt;router-link to&#x3D;&quot;&#x2F;home&quot;&gt;首页&lt;&#x2F;router-link&gt;&lt;&#x2F;li&gt;</span><br><span class="line">            &lt;li&gt;&lt;router-link to&#x3D;&quot;&#x2F;vedios&quot;&gt;视频&lt;&#x2F;router-link&gt;&lt;&#x2F;li&gt;</span><br><span class="line">            &lt;li&gt;&lt;router-link to&#x3D;&quot;&#x2F;books&quot;&gt;书籍&lt;&#x2F;router-link&gt;&lt;&#x2F;li&gt;</span><br><span class="line">          &lt;&#x2F;ul&gt;</span><br><span class="line">          &lt;form class&#x3D;&quot;navbar-form navbar-left&quot;&gt;</span><br><span class="line">            &lt;div class&#x3D;&quot;form-group&quot;&gt;</span><br><span class="line">              &lt;input type&#x3D;&quot;text&quot; class&#x3D;&quot;form-control&quot; placeholder&#x3D;&quot;Search&quot;&gt;</span><br><span class="line">            &lt;&#x2F;div&gt;</span><br><span class="line">            &lt;button type&#x3D;&quot;submit&quot; class&#x3D;&quot;btn btn-default&quot;&gt;搜索&lt;&#x2F;button&gt;</span><br><span class="line">          &lt;&#x2F;form&gt;</span><br><span class="line">        &lt;&#x2F;div&gt;</span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;&#x2F;nav&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;container&quot;&gt;</span><br><span class="line">      &lt;div class&#x3D;&quot;col-sm-12&quot;&gt;</span><br><span class="line">        &lt;router-view&gt;&lt;&#x2F;router-view&gt;</span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;footer&quot;&gt;</span><br><span class="line">      &lt;div class&#x3D;&quot;container&quot;&gt;</span><br><span class="line">        &lt;div class&#x3D;&quot;col-sm-3&quot;&gt;</span><br><span class="line">          &lt;ul&gt;</span><br><span class="line">            &lt;li class&#x3D;&quot;li-head&quot;&gt;产品&lt;&#x2F;li&gt;</span><br><span class="line">            &lt;li class&#x3D;&quot;li-item&quot;&gt; &lt;router-link to&#x3D;&quot;&#x2F;books&quot;&gt;视频&lt;&#x2F;router-link&gt;&lt;&#x2F;li&gt;</span><br><span class="line">            &lt;li class&#x3D;&quot;li-item&quot;&gt;&lt;router-link to&#x3D;&quot;&#x2F;vedios&quot;&gt;书籍&lt;&#x2F;router-link&gt;&lt;&#x2F;li&gt;</span><br><span class="line">          &lt;&#x2F;ul&gt;</span><br><span class="line">        &lt;&#x2F;div&gt;</span><br><span class="line">        &lt;div class&#x3D;&quot;col-sm-3&quot;&gt;</span><br><span class="line">          &lt;ul&gt;</span><br><span class="line">            &lt;li class&#x3D;&quot;li-head&quot;&gt;关于&lt;&#x2F;li&gt;</span><br><span class="line">            &lt;li class&#x3D;&quot;li-item&quot;&gt; &lt;router-link to&#x3D;&quot;&#x2F;about&quot;&gt;了解我们&lt;&#x2F;router-link&gt;&lt;&#x2F;li&gt;</span><br><span class="line">            &lt;li class&#x3D;&quot;li-item&quot;&gt;&lt;router-link to&#x3D;&quot;&#x2F;about&quot;&gt;加入我们&lt;&#x2F;router-link&gt;&lt;&#x2F;li&gt;</span><br><span class="line">          &lt;&#x2F;ul&gt;</span><br><span class="line">        &lt;&#x2F;div&gt;</span><br><span class="line">        &lt;div class&#x3D;&quot;col-sm-3&quot;&gt;</span><br><span class="line">          &lt;ul&gt;</span><br><span class="line">            &lt;li class&#x3D;&quot;li-head&quot;&gt;服务支持&lt;&#x2F;li&gt;</span><br><span class="line">            &lt;li class&#x3D;&quot;li-item&quot;&gt; &lt;a href&#x3D;&quot;www.decadexun.cn&quot;&gt;技术支持&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;</span><br><span class="line">            &lt;li class&#x3D;&quot;li-item&quot;&gt;&lt;router-link to&#x3D;&quot;&#x2F;books&quot;&gt;售后服务&lt;&#x2F;router-link&gt;&lt;&#x2F;li&gt;</span><br><span class="line">          &lt;&#x2F;ul&gt;</span><br><span class="line">        &lt;&#x2F;div&gt;</span><br><span class="line">        &lt;div class&#x3D;&quot;col-sm-3&quot;&gt;</span><br><span class="line">          &lt;div class&#x3D;&quot;head&quot;&gt;100-800-200&lt;&#x2F;div&gt;</span><br><span class="line">          &lt;div class&#x3D;&quot;box&quot;&gt; 联系客服&lt;&#x2F;div&gt;</span><br><span class="line">          &lt;div class&#x3D;&quot;time&quot;&gt;周一至周日 9:00 - 22:00&lt;&#x2F;div&gt;</span><br><span class="line">        &lt;&#x2F;div&gt;</span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &#39;app&#39;</span><br><span class="line">&#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">.footer&#123;</span><br><span class="line">  border-top:#e7e7e7 1px solid;</span><br><span class="line">  background: #f8f8f8;</span><br><span class="line">  padding: 30px 0;</span><br><span class="line">&#125;</span><br><span class="line">li&#123;</span><br><span class="line">  list-style: none;</span><br><span class="line">&#125;</span><br><span class="line">.li-head&#123;</span><br><span class="line">  font-size: 18px;</span><br><span class="line">  margin-bottom: 10px;</span><br><span class="line">&#125;</span><br><span class="line">.li-item&#123;</span><br><span class="line">  margin-top:10px;</span><br><span class="line">&#125;</span><br><span class="line">.box&#123;</span><br><span class="line">  width: 100%;</span><br><span class="line">  height: 30px;</span><br><span class="line">  background: #337ab7;</span><br><span class="line">  margin: 10px 0;</span><br><span class="line">  text-align: center;</span><br><span class="line">  line-height: 30px;</span><br><span class="line">  color:#fff;</span><br><span class="line">&#125;</span><br><span class="line">.head&#123;</span><br><span class="line">  font-size: 20px;</span><br><span class="line">  font-weight: bold;</span><br><span class="line">  text-align: center;</span><br><span class="line">&#125;</span><br><span class="line">.time&#123;</span><br><span class="line">  font-size: 14px;</span><br><span class="line">  text-align: center;</span><br><span class="line">&#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br></pre></td></tr></table></figure>
+<p>由于用到了bootstrap的自适应合并、轮播图组件，所以，如果此时你run dev，会报一个缺少jQuery的错误，所以，我们可以去网上找一个jquery的cdn库，找到根目录的index.html,这是我们的首页入口页面，加入如下内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src&#x3D;&quot;https:&#x2F;&#x2F;cdn.bootcss.com&#x2F;jquery&#x2F;3.2.1&#x2F;jquery.js&quot;&gt;&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<p>由于bootstrap是一个可以自适应手机端的ui库，所以你也可以顺手加入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name&#x3D;&quot;viewport&quot; content&#x3D;&quot;width&#x3D;device-width, initial-scale&#x3D;1, user-scalable&#x3D;no&quot;&gt;</span><br></pre></td></tr></table></figure>
+<p>于是在手机上访问的时候，也会 有较好的效果</p>
+<p>此时的index.html</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;</span><br><span class="line">    &lt;meta charset&#x3D;&quot;utf-8&quot;&gt;</span><br><span class="line">    &lt;meta name&#x3D;&quot;viewport&quot; content&#x3D;&quot;width&#x3D;device-width, initial-scale&#x3D;1, user-scalable&#x3D;no&quot;&gt;</span><br><span class="line">    &lt;title&gt;首页&lt;&#x2F;title&gt;</span><br><span class="line">    &lt;script src&#x3D;&quot;https:&#x2F;&#x2F;cdn.bootcss.com&#x2F;jquery&#x2F;3.2.1&#x2F;jquery.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">  &lt;&#x2F;head&gt;</span><br><span class="line">  &lt;body&gt;</span><br><span class="line">    &lt;div id&#x3D;&quot;app&quot;&gt;&lt;&#x2F;div&gt;</span><br><span class="line">    &lt;!-- built files will be auto injected --&gt;</span><br><span class="line">  &lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<p>然后</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
+<p>此时的效果</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4958474-fdeca4ef9eecec27.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="index1.png"></p>
+<h3 id="2-2创建首页组件"><a href="#2-2创建首页组件" class="headerlink" title="2.2创建首页组件"></a>2.2创建首页组件</h3><p>看到上图的中间部分，这就是<code>&lt;router-view&gt;&lt;/router-view&gt;</code>渲染的效果，此时的首页默认是components下的vue组件，于是我可以写一个自己的首页组件，取代中间的部分</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">      &lt;div class&#x3D;&quot;col-sm-9&quot;&gt;</span><br><span class="line">        &lt;div id&#x3D;&quot;carousel-example-generic&quot; class&#x3D;&quot;carousel slide&quot; data-ride&#x3D;&quot;carousel&quot;&gt;</span><br><span class="line">          &lt;!-- Indicators --&gt;</span><br><span class="line">          &lt;ol class&#x3D;&quot;carousel-indicators&quot;&gt;</span><br><span class="line">            &lt;li data-target&#x3D;&quot;#carousel-example-generic&quot; data-slide-to&#x3D;&quot;0&quot; class&#x3D;&quot;active&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">            &lt;li data-target&#x3D;&quot;#carousel-example-generic&quot; data-slide-to&#x3D;&quot;1&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">            &lt;li data-target&#x3D;&quot;#carousel-example-generic&quot; data-slide-to&#x3D;&quot;2&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">          &lt;&#x2F;ol&gt;</span><br><span class="line"></span><br><span class="line">          &lt;!-- Wrapper for slides --&gt;</span><br><span class="line">          &lt;div class&#x3D;&quot;carousel-inner&quot; role&#x3D;&quot;listbox&quot;&gt;</span><br><span class="line">            &lt;div class&#x3D;&quot;item active&quot;&gt;</span><br><span class="line">              &lt;img src&#x3D;&quot;http:&#x2F;&#x2F;res.cloudinary.com&#x2F;dyb29pfpm&#x2F;image&#x2F;upload&#x2F;v1507608949&#x2F;1507513417919_h1vcov.jpg&quot; alt&#x3D;&quot;#&quot;&gt;</span><br><span class="line">              &lt;div class&#x3D;&quot;carousel-caption&quot;&gt;</span><br><span class="line">                1</span><br><span class="line">              &lt;&#x2F;div&gt;</span><br><span class="line">            &lt;&#x2F;div&gt;</span><br><span class="line">            &lt;div class&#x3D;&quot;item&quot;&gt;</span><br><span class="line">              &lt;img src&#x3D;&quot;http:&#x2F;&#x2F;res.cloudinary.com&#x2F;dyb29pfpm&#x2F;image&#x2F;upload&#x2F;v1507608948&#x2F;1507514383114_ksq1ib.jpg&quot; alt&#x3D;&quot;#&quot;&gt;</span><br><span class="line">              &lt;div class&#x3D;&quot;carousel-caption&quot;&gt;</span><br><span class="line">                2</span><br><span class="line">              &lt;&#x2F;div&gt;</span><br><span class="line">            &lt;&#x2F;div&gt;</span><br><span class="line">            &lt;div class&#x3D;&quot;item&quot;&gt;</span><br><span class="line">              &lt;img src&#x3D;&quot;http:&#x2F;&#x2F;res.cloudinary.com&#x2F;dyb29pfpm&#x2F;image&#x2F;upload&#x2F;v1507608944&#x2F;1507514233895_bv935a.jpg&quot; alt&#x3D;&quot;#&quot;&gt;</span><br><span class="line">              &lt;div class&#x3D;&quot;carousel-caption&quot;&gt;</span><br><span class="line">                2</span><br><span class="line">              &lt;&#x2F;div&gt;</span><br><span class="line">            &lt;&#x2F;div&gt;</span><br><span class="line">          &lt;&#x2F;div&gt;</span><br><span class="line"></span><br><span class="line">          &lt;!-- Controls --&gt;</span><br><span class="line">          &lt;a class&#x3D;&quot;left carousel-control&quot; href&#x3D;&quot;#carousel-example-generic&quot; role&#x3D;&quot;button&quot; data-slide&#x3D;&quot;prev&quot;&gt;</span><br><span class="line">            &lt;span class&#x3D;&quot;glyphicon glyphicon-chevron-left&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;&#x2F;span&gt;</span><br><span class="line">            &lt;span class&#x3D;&quot;sr-only&quot;&gt;Previous&lt;&#x2F;span&gt;</span><br><span class="line">          &lt;&#x2F;a&gt;</span><br><span class="line">          &lt;a class&#x3D;&quot;right carousel-control&quot; href&#x3D;&quot;#carousel-example-generic&quot; role&#x3D;&quot;button&quot; data-slide&#x3D;&quot;next&quot;&gt;</span><br><span class="line">            &lt;span class&#x3D;&quot;glyphicon glyphicon-chevron-right&quot; aria-hidden&#x3D;&quot;true&quot;&gt;&lt;&#x2F;span&gt;</span><br><span class="line">            &lt;span class&#x3D;&quot;sr-only&quot;&gt;Next&lt;&#x2F;span&gt;</span><br><span class="line">          &lt;&#x2F;a&gt;</span><br><span class="line">        &lt;&#x2F;div&gt;</span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">      &lt;div class&#x3D;&quot;col-sm-3&quot;&gt;</span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">&#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<p>这是一个轮播图，但是我们需要怎样才可以看到效果呢，怎样取代中间部分，这就涉及到了路由的问题了，vue-router可以登场了</p>
+<p>在刚才的src目录下，还有一个router目录，查看里面的index.js文件,此时是这样的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import Vue from &#39;vue&#39;</span><br><span class="line">import Router from &#39;vue-router&#39;</span><br><span class="line">import HelloWorld from &#39;@&#x2F;components&#x2F;HelloWorld&#39;</span><br><span class="line"></span><br><span class="line">Vue.use(Router)</span><br><span class="line"></span><br><span class="line">export default new Router(&#123;</span><br><span class="line">  routes: [</span><br><span class="line">    &#123;</span><br><span class="line">      path: &#39;&#x2F;&#39;,</span><br><span class="line">      name: &#39;Hello&#39;,</span><br><span class="line">      component: HelloWorld</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>于是我们明白为什么，首页会显示helloworld效果，是因为路由指定读取了在路径为’’/‘’的时候读取该组件，于是我们将该部分换成我们自己的组件</p>
+<p>此时的index.js</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import Vue from &#39;vue&#39;</span><br><span class="line">import Router from &#39;vue-router&#39;</span><br><span class="line">import Home from &#39;@&#x2F;components&#x2F;Home&#39;</span><br><span class="line"></span><br><span class="line">Vue.use(Router)</span><br><span class="line"></span><br><span class="line">export default new Router(&#123;</span><br><span class="line">  routes: [</span><br><span class="line">    &#123;</span><br><span class="line">      path: &#39;&#x2F;&#39;,</span><br><span class="line">      name: &#39;Home&#39;,</span><br><span class="line">      component: Home</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>修改后，我们可以查看效果</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4958474-a71dff1975f7d1af.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="index2.png"></p>
+<p>现在的效果就比较优雅了，但是右边好像比较空虚，于是我们可以设置一个侧边栏，考虑到，不仅仅在首页要用到侧边栏，于是我们将侧边栏写成一个组件，方便多个页面调用该组件</p>
+<h3 id="2-3创建通用部分组件"><a href="#2-3创建通用部分组件" class="headerlink" title="2.3创建通用部分组件"></a>2.3创建通用部分组件</h3><p>Sidebar.vue</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class&#x3D;&quot;panel panel-default&quot;&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;panel-heading&quot;&gt;</span><br><span class="line">        热门课程</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;img src&#x3D;&quot;http:&#x2F;&#x2F;res.cloudinary.com&#x2F;dyb29pfpm&#x2F;image&#x2F;upload&#x2F;v1507608952&#x2F;1507514293423_jv25xh.jpg&quot; class&#x3D;&quot;img-responsive&quot; alt&#x3D;&quot;Responsive image&quot;&gt;</span><br><span class="line">    &lt;img src&#x3D;&quot;http:&#x2F;&#x2F;res.cloudinary.com&#x2F;dyb29pfpm&#x2F;image&#x2F;upload&#x2F;v1507608952&#x2F;1507514293423_jv25xh.jpg&quot; class&#x3D;&quot;img-responsive&quot; alt&#x3D;&quot;Responsive image&quot;&gt;</span><br><span class="line">    &lt;img src&#x3D;&quot;http:&#x2F;&#x2F;res.cloudinary.com&#x2F;dyb29pfpm&#x2F;image&#x2F;upload&#x2F;v1507608952&#x2F;1507514293423_jv25xh.jpg&quot; class&#x3D;&quot;img-responsive&quot; alt&#x3D;&quot;Responsive image&quot;&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">  export default &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<p>那我们该怎样在父组件Home.vue里面加入组件</p>
+<p>template部分</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">      &lt;div class&#x3D;&quot;col-sm-3&quot;&gt;</span><br><span class="line">        &lt;sidebar&gt;&lt;&#x2F;sidebar&gt;</span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br></pre></td></tr></table></figure>
+<p>script部分</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">import Sidebar from &quot;.&#x2F;Sidebar.vue&quot;</span><br><span class="line">export default &#123;</span><br><span class="line">  components:&#123;</span><br><span class="line">    &#39;sidebar&#39;: Sidebar,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<p>此时由于热加载，直接就可以看到加入了侧边栏后的效果</p>
+<p>于是一个完全没有数据交互的展示型首页就出现了，接下来我们要创建一些有其他功能的界面</p>
+<h3 id="2-4创建录入书籍页面"><a href="#2-4创建录入书籍页面" class="headerlink" title="2.4创建录入书籍页面"></a>2.4创建录入书籍页面</h3><p>录入页面可以算是控制台了，为了管理方便，肯定是会有一个控制台页面进行集成，但此处我们只讲实现这一个功能的页面</p>
+<p>创建BookAdmin.vue</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class&#x3D;&quot;panel panel-default&quot;&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;panel-heading&quot;&gt;</span><br><span class="line">      录入书籍</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;panel-body&quot;&gt;</span><br><span class="line">      &lt;div class&#x3D;&quot;form-horizontal&quot;&gt;</span><br><span class="line">        &lt;div class&#x3D;&quot;form-group&quot;&gt;</span><br><span class="line">          &lt;div class&#x3D;&quot;col-sm-12&quot;&gt;</span><br><span class="line">            &lt;label&gt;书籍名称&lt;&#x2F;label&gt;</span><br><span class="line">            &lt;input</span><br><span class="line">              type&#x3D;&quot;text&quot;</span><br><span class="line">              class&#x3D;&quot;form-control&quot;</span><br><span class="line">              v-model&#x3D;&quot;book.name&quot;</span><br><span class="line">              placeholder&#x3D;&quot;name&quot;</span><br><span class="line">            &#x2F;&gt;</span><br><span class="line">          &lt;&#x2F;div&gt;</span><br><span class="line">          &lt;div class&#x3D;&quot;col-sm-12&quot;&gt;</span><br><span class="line">            &lt;label&gt;编写老师&lt;&#x2F;label&gt;</span><br><span class="line">            &lt;input</span><br><span class="line">              type&#x3D;&quot;text&quot;</span><br><span class="line">              class&#x3D;&quot;form-control&quot;</span><br><span class="line">              v-model&#x3D;&quot;book.teacher&quot;</span><br><span class="line">              placeholder&#x3D;&quot;teacher&quot;</span><br><span class="line">            &#x2F;&gt;</span><br><span class="line">          &lt;&#x2F;div&gt;</span><br><span class="line">          &lt;div class&#x3D;&quot;col-sm-12&quot;&gt;</span><br><span class="line">            &lt;label&gt;书籍简介&lt;&#x2F;label&gt;</span><br><span class="line">            &lt;input</span><br><span class="line">              type&#x3D;&quot;text&quot;</span><br><span class="line">              class&#x3D;&quot;form-control&quot;</span><br><span class="line">              v-model&#x3D;&quot;book.introduction&quot;</span><br><span class="line">              placeholder&#x3D;&quot;introduction&quot;</span><br><span class="line">            &#x2F;&gt;</span><br><span class="line">          &lt;&#x2F;div&gt;</span><br><span class="line">          &lt;div class&#x3D;&quot;col-sm-12&quot;&gt;</span><br><span class="line">            &lt;label&gt;购买链接&lt;&#x2F;label&gt;</span><br><span class="line">            &lt;input</span><br><span class="line">              type&#x3D;&quot;text&quot;</span><br><span class="line">              class&#x3D;&quot;form-control&quot;</span><br><span class="line">              v-model&#x3D;&quot;book.shopUrl&quot;</span><br><span class="line">              placeholder&#x3D;&quot;shopUrl&quot;</span><br><span class="line">            &#x2F;&gt;</span><br><span class="line">          &lt;&#x2F;div&gt;</span><br><span class="line">          &lt;div class&#x3D;&quot;col-sm-12&quot;&gt;</span><br><span class="line">            &lt;label&gt;图片链接&lt;&#x2F;label&gt;</span><br><span class="line">            &lt;input</span><br><span class="line">              type&#x3D;&quot;text&quot;</span><br><span class="line">              class&#x3D;&quot;form-control&quot;</span><br><span class="line">              v-model&#x3D;&quot;book.pictureUrl&quot;</span><br><span class="line">              placeholder&#x3D;&quot;pictureUrl&quot;</span><br><span class="line">            &#x2F;&gt;</span><br><span class="line">          &lt;&#x2F;div&gt;</span><br><span class="line">        &lt;&#x2F;div&gt;</span><br><span class="line">        &lt;button class&#x3D;&quot;btn btn-primary&quot; @click&#x3D;&quot;save()&quot;&gt;录入&lt;&#x2F;button&gt;</span><br><span class="line">        &lt;router-link to&#x3D;&quot;&#x2F;&quot; class&#x3D;&quot;btn btn-danger&quot;&gt;取消&lt;&#x2F;router-link&gt;</span><br><span class="line">        &lt;hr&gt;</span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">  export default &#123;</span><br><span class="line">        name : &#39;BookAdmin&#39;,</span><br><span class="line">        data() &#123;</span><br><span class="line">            return &#123;</span><br><span class="line">              book:&#123;</span><br><span class="line">                name : &#39;&#39;,</span><br><span class="line">                teacher : &#39;&#39;,</span><br><span class="line">                introduction : &#39;&#39;,</span><br><span class="line">                shopUrl : &#39;&#39;,</span><br><span class="line">                pictureUrl : &#39;&#39;,</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        methods:&#123;</span><br><span class="line">          save() &#123;</span><br><span class="line">            this.$http.post(&#39;localhost:8080&#x2F;createBook&#39;,&#123;</span><br><span class="line">              name : this.book.name,</span><br><span class="line">              teacher : this.book.teacher,</span><br><span class="line">              shopUrl : this.book.shopUrl,</span><br><span class="line">              pictureUrl : this.book.pictureUrl,</span><br><span class="line">              introduction : this.book.introduction</span><br><span class="line">            &#125;).then(function(ret)&#123;</span><br><span class="line">              console.log(ret);</span><br><span class="line">              let book &#x3D; this.book</span><br><span class="line">              console.log(book);</span><br><span class="line">              location.href&#x3D;&quot;&#x2F;#&#x2F;books&quot;</span><br><span class="line">            &#125;)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<p>为了能够反问到我们的页面，我们都知道该去添加新的路由了</p>
+<p>index.js修改成如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import BookAdmin from &#39;@&#x2F;components&#x2F;BookAdmin&#39;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">routes: [</span><br><span class="line">   &#123;</span><br><span class="line">     path: &#39;&#x2F;&#39;,</span><br><span class="line">     name: &#39;Home&#39;,</span><br><span class="line">     component: Home</span><br><span class="line">   &#125;,</span><br><span class="line">   &#123;</span><br><span class="line">     path: &#39;&#x2F;bookAdmin&#39;,</span><br><span class="line">     name: &#39;BookAdmin&#39;,</span><br><span class="line">     component: BookAdmin</span><br><span class="line">   &#125;</span><br><span class="line"> ]</span><br></pre></td></tr></table></figure>
+<p>然后在浏览器访问<a href="http://localhost:8080/#/bookAdmin" target="_blank" rel="noopener">http://localhost:8080/#/bookAdmin</a></p>
+<p>此时的效果如下</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4958474-4bf0a401430b1f31.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="bookadmin.png"></p>
+<p>那我们该怎样向后台post表单数据呢</p>
+<p>大家可以看组件的script部分</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">  export default &#123;</span><br><span class="line">        name : &#39;BookAdmin&#39;,</span><br><span class="line">        data() &#123;</span><br><span class="line">            return &#123;</span><br><span class="line">              book:&#123;</span><br><span class="line">                name : &#39;&#39;,</span><br><span class="line">                teacher : &#39;&#39;,</span><br><span class="line">                introduction : &#39;&#39;,</span><br><span class="line">                shopUrl : &#39;&#39;,</span><br><span class="line">                pictureUrl : &#39;&#39;,</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        methods:&#123;</span><br><span class="line">          save() &#123;</span><br><span class="line">            this.$http.post(&#39;localhost:8080&#x2F;createBook&#39;,&#123;</span><br><span class="line">              name : this.book.name,</span><br><span class="line">              teacher : this.book.teacher,</span><br><span class="line">              shopUrl : this.book.shopUrl,</span><br><span class="line">              pictureUrl : this.book.pictureUrl,</span><br><span class="line">              introduction : this.book.introduction</span><br><span class="line">            &#125;).then(function(ret)&#123;</span><br><span class="line">              console.log(ret);</span><br><span class="line">              let book &#x3D; this.book</span><br><span class="line">              console.log(book);</span><br><span class="line">              location.href&#x3D;&quot;&#x2F;#&#x2F;books&quot;</span><br><span class="line">            &#125;)</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<p>首先使用了一个data()方法，返回的book对象，里面包含了我们需要接收关于一个book 的所有属性，此时为空，然后我再下面又引入了一个methods对象，里面包含了点击按钮触发的save()方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">this.$http.post(&#39;localhost:8080&#x2F;createBook&#39;,&#123;&#125;).then(function()&#123;&#125;)</span><br></pre></td></tr></table></figure>
+<p>便是vue-resource的使用方法，此处的url-‘localhost:8080/createBook’,便是发送的请求链接，于是大家便知道，我们接下来要定义后台的监听端口，并定义/createBook方法，才能使这个方法生效</p>
+<h3 id="2-5完成数据交互"><a href="#2-5完成数据交互" class="headerlink" title="2.5完成数据交互"></a>2.5完成数据交互</h3><p>首先安装需要的依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install express morgan mongodb body-parser --save-dev</span><br></pre></td></tr></table></figure>
+<p>Morgan和body-parser，分别用来log美化和解析参数。然后再根目录创建app.js作为入口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">var express &#x3D; require(&#39;express&#39;);</span><br><span class="line">var app &#x3D; express();</span><br><span class="line">var bodyParser &#x3D; require(&#39;body-parser&#39;);</span><br><span class="line">var morgan &#x3D; require(&#39;morgan&#39;);</span><br><span class="line">var MongoClient &#x3D; require(&#39;mongodb&#39;).MongoClient;</span><br><span class="line">&#x2F;&#x2F;确定数据库名称vuetest</span><br><span class="line">var mongoUrl &#x3D; &#39;mongodb:&#x2F;&#x2F;localhost:27017&#x2F;vuetest&#39;;</span><br><span class="line">var _db;</span><br><span class="line">app.use(morgan(&#39;dev&#39;));</span><br><span class="line">app.use(bodyParser.json());</span><br><span class="line">app.use(express.static(&#39;dist&#39;));</span><br><span class="line">MongoClient.connect(mongoUrl, function (err, db) &#123;</span><br><span class="line">  if(err) &#123;</span><br><span class="line">    console.error(err);</span><br><span class="line">    return;</span><br><span class="line">  &#125;</span><br><span class="line">  console.log(&#39;mongodb have connected your project&#39;);</span><br><span class="line">  _db &#x3D; db;</span><br><span class="line">  &#x2F;&#x2F;监听端口8080</span><br><span class="line">  app.listen(8080, function () &#123;</span><br><span class="line">    console.log(&#39;server is running at 8080&#39;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>通过上面的配置，我们创建了名为vuetest的数据库，确定了监听端口8080</p>
+<p>接下来继续在app.js编写/createBook方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;增加书籍</span><br><span class="line">app.post(&#39;&#x2F;createBook&#39;, function(req, res, next) &#123;</span><br><span class="line">var request &#x3D; req.body;</span><br><span class="line">&#x2F;&#x2F;接受请求</span><br><span class="line">var collection &#x3D; _db.collection(&#39;book&#39;);</span><br><span class="line">&#x2F;&#x2F;创建名为book的数据表</span><br><span class="line">if(!request.name || !request.teacher || !request.introduction || !request.shopUrl || !request.pictureUrl) &#123;</span><br><span class="line">  res.send(&#123;errcode:-1,errmsg:&quot;参数不完整&quot;&#125;);</span><br><span class="line">  return;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;插入数据表</span><br><span class="line">collection.insert(&#123;name: request.name, teacher: request.teacher,introduction: request.introduction,shopUrl: request.shopUrl,pictureUrl: request.pictureUrl,&#125;, function (err, ret) &#123;</span><br><span class="line">  if(err) &#123;</span><br><span class="line">    console.error(err);</span><br><span class="line">    res.status(500).end();</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    res.send(&#123;errcode:0,errmsg:&quot;ok&quot;&#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>接下来需要开启我们的mongodb服务，本地开发，就得在本机的windows或者mac上安装mongodb</p>
+<p>完成了mongodb安装之后</p>
+<p>切换到mongodb目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;mongod --dbpath E:\data</span><br></pre></td></tr></table></figure>
+<p>使用这个命令启动mongodb服务 dbpath是为了确定数据存储的路径，我的本地数据库存储路径就是E:\data</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4958474-7c3fa20caa07871c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="mongo.png"></p>
+<p>有上图的显示表示开启成功</p>
+<p>接下来,打包构建并运行我们的项目</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br><span class="line">node app.js</span><br></pre></td></tr></table></figure>
+<p>可以在localhost:8080访问我们的项目，直接<a href="http://localhost:8080/#/bookAdmin到达录入页" target="_blank" rel="noopener">http://localhost:8080/#/bookAdmin到达录入页</a></p>
+<p>输入一些信息进行测试</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4958474-722cce00f6e535f8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="test.png"></p>
+<p>在XHR请求里面可以看到一切正常，数据已经插入到数据库，并且此时已经跳转到了/books列表页了，由于没有写列表页，所以中间部分是空白的</p>
+<h3 id="2-6创建数据展示组建-列表页"><a href="#2-6创建数据展示组建-列表页" class="headerlink" title="2.6创建数据展示组建-列表页"></a>2.6创建数据展示组建-列表页</h3><p>BookList.vue</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;col-sm-9&quot;&gt;</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;i class&#x3D;&quot;glyphicon glyphicon-list-alt&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">        书籍列表</span><br><span class="line">        &lt;&#x2F;div&gt;</span><br><span class="line">      &lt;hr&gt;</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;p v-if&#x3D;&quot;!books.length&quot;&gt;&lt;strong&gt;还没有任何书籍&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;</span><br><span class="line"></span><br><span class="line">        &lt;div class&#x3D;&quot;list-group&quot;&gt;</span><br><span class="line">          &lt;a class&#x3D;&quot;list-group-item&quot; v-for&#x3D;&quot;(book,index) in books&quot; :href&#x3D;&quot;book.shopUrl&quot;&gt;</span><br><span class="line">            &lt;div class&#x3D;&quot;row&quot;&gt;</span><br><span class="line">              &lt;div class&#x3D;&quot;col-sm-3 book-avatar&quot;&gt;</span><br><span class="line">                &lt;img :src&#x3D;&quot;book.pictureUrl&quot; class&#x3D;&quot;avatar img-responsive&quot; &#x2F;&gt;</span><br><span class="line">              &lt;&#x2F;div&gt;</span><br><span class="line"></span><br><span class="line">              &lt;div class&#x3D;&quot;col-sm-4 text-center&quot;&gt;</span><br><span class="line">                &lt;h5 class&#x3D;&quot;list-group-item-text total-time&quot;&gt;</span><br><span class="line">                  &lt;i class&#x3D;&quot;glyphicon glyphicon-book&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">                  &#123;&#123; book.name &#125;&#125;</span><br><span class="line">                &lt;&#x2F;h5&gt;</span><br><span class="line">                &lt;p class&#x3D;&quot;label label-primary text-center&quot;&gt;</span><br><span class="line">                  &lt;i class&#x3D;&quot;glyphicon glyphicon-user&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">                  &#123;&#123; book.teacher &#125;&#125;</span><br><span class="line">                &lt;&#x2F;p&gt;</span><br><span class="line">              &lt;&#x2F;div&gt;</span><br><span class="line"></span><br><span class="line">              &lt;div class&#x3D;&quot;col-sm-5&quot;&gt;</span><br><span class="line">                &lt;p&gt;&#123;&#123; book.introduction &#125;&#125;&lt;&#x2F;p&gt;</span><br><span class="line">              &lt;&#x2F;div&gt;</span><br><span class="line"></span><br><span class="line">            &lt;&#x2F;div&gt;</span><br><span class="line">          &lt;&#x2F;a&gt;</span><br><span class="line"></span><br><span class="line">        &lt;&#x2F;div&gt;</span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;col-sm-3&quot;&gt;</span><br><span class="line">        &lt;sidebar&gt;&lt;&#x2F;sidebar&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Sidebar from &quot;.&#x2F;Sidebar.vue&quot;</span><br><span class="line">    export default &#123;</span><br><span class="line">        components:&#123;</span><br><span class="line">          &#39;sidebar&#39;: Sidebar,</span><br><span class="line">        &#125;,</span><br><span class="line">        name : &#39;BookList&#39;,</span><br><span class="line">        data()&#123;</span><br><span class="line">          return &#123;</span><br><span class="line">            books:[]</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        created()&#123;</span><br><span class="line">          document.title&#x3D;&quot;书籍列表&quot;</span><br><span class="line">          this.$http.get(&#39;http:&#x2F;&#x2F;localhost:8080&#x2F;book-list&#39;)</span><br><span class="line">            .then(function(ret) &#123;</span><br><span class="line">              this.books &#x3D; ret.data;</span><br><span class="line">              console.log(ret.data)</span><br><span class="line">            &#125;)</span><br><span class="line">            .then(function(err) &#123;</span><br><span class="line">              console.log(err);</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">.avatar &#123;</span><br><span class="line">    width:100%;</span><br><span class="line">    margin-top: 10px;</span><br><span class="line">    margin-bottom: 10px;</span><br><span class="line">  &#125;</span><br><span class="line">  .book-avatar &#123;</span><br><span class="line">    width:100%;</span><br><span class="line">    background-color: #f5f5f5;</span><br><span class="line">    border-top: 18px;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br></pre></td></tr></table></figure>
+<p>套路和之前一模一样</p>
+<p>再到router的index.js插入路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">import BookList from &#39;@&#x2F;components&#x2F;BookList&#39;</span><br><span class="line">...</span><br><span class="line">...</span><br><span class="line">    &#123;</span><br><span class="line">      path: &#39;&#x2F;books&#39;,</span><br><span class="line">      component: BookList,</span><br><span class="line">    &#125;,</span><br></pre></td></tr></table></figure>
+<p>然后回到app.js添加控制方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;获取书籍列表</span><br><span class="line">app.get(&#39;&#x2F;book-list&#39;, function(req, res, next) &#123;</span><br><span class="line">  var collection &#x3D; _db.collection(&#39;book&#39;);</span><br><span class="line">  &#x2F;&#x2F;使用了数据表查找全部的方法</span><br><span class="line">  collection.find(&#123;&#125;).toArray(function (err, ret) &#123;</span><br><span class="line">    if(err) &#123;</span><br><span class="line">      console.error(err);</span><br><span class="line">      return;</span><br><span class="line">    &#125;</span><br><span class="line">    res.json(ret);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>然后我又去<a href="http://localhost:8080/#/bookAdmin录入了一本书，此时跳转之后的效果" target="_blank" rel="noopener">http://localhost:8080/#/bookAdmin录入了一本书，此时跳转之后的效果</a></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4958474-56f020e1b465e96e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="book-list.png"></p>
+<p>感觉还是不错的</p>
+<p>于是到此处，关于本地环境下的项目，已经跑通全栈，接下来，便是服务器跑通的环节</p>
+<h2 id="3-完成服务器环境下的项目开发"><a href="#3-完成服务器环境下的项目开发" class="headerlink" title="3.完成服务器环境下的项目开发"></a>3.完成服务器环境下的项目开发</h2><h3 id="3-1首先是先将项目上传到服务器"><a href="#3-1首先是先将项目上传到服务器" class="headerlink" title="3.1首先是先将项目上传到服务器"></a>3.1首先是先将项目上传到服务器</h3><p>在此处我选择使用git，然后考虑我们应该上传哪些到服务器，dist生成文件肯定是要的，然后是app.js涉及到的部分,不需要的在.gitgignore里面便可以再上传时被忽视</p>
+<p>现在github上创建一个git仓库<a href="https://github.com/decadeheart/vue-example.git" target="_blank" rel="noopener">https://github.com/decadeheart/vue-example.git</a></p>
+<p>在本地</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git init </span><br><span class="line">git remote add origin https:&#x2F;&#x2F;github.com&#x2F;decadeheart&#x2F;vue-example.git</span><br><span class="line">git add .</span><br><span class="line">git commit -m &quot;上传服务器&quot;</span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+<p>这个时候可以切换到服务器了</p>
+<p>至于服务的来源，推荐腾讯云，学生优惠之前可以抢1元一个月的，现在我买的是10元一个月，最低配置，但也可以拿来耍耍</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh root@xxx.xx.xx.xx</span><br><span class="line">&#x2F;&#x2F;后面的是ip</span><br></pre></td></tr></table></figure>
+<p>登录上去之后，首先将项目文件拉取下来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;home</span><br><span class="line">mkdir vue-exmaple</span><br><span class="line">cd vue-exmaple</span><br><span class="line">git init</span><br><span class="line">&#x2F;&#x2F;前提是你的服务器安装好了git</span><br><span class="line"> git remote add origin https:&#x2F;&#x2F;github.com&#x2F;decadeheart&#x2F;vue-example.git</span><br><span class="line">git pull origin master</span><br><span class="line">ls</span><br></pre></td></tr></table></figure>
+<p>接下来就是想要运行node app.js来运行项目了</p>
+<p>但是肯定是需要依赖的，首先便就是服务器上的nodejs，还有服务器上的mongodb</p>
+<h3 id="3-2安装服务器上的依赖"><a href="#3-2安装服务器上的依赖" class="headerlink" title="3.2安装服务器上的依赖"></a>3.2安装服务器上的依赖</h3><p>顺序应该是</p>
+<ul>
+<li>安装nodejs，可以参考<a href="http://blog.csdn.net/qq_21794603/article/details/68067821" target="_blank" rel="noopener">Linux系统（Centos）下安装nodejs并配置环境</a></li>
+<li>安装mongodb<a href="http://www.cnblogs.com/roam/p/5762459.html" target="_blank" rel="noopener">MongoDB系列一：CentOS7.2下安装mongoDB3.2.8</a></li>
+<li>安装nginx <a href="http://www.jianshu.com/p/d5114a2a2052" target="_blank" rel="noopener">Centos下 Nginx安装与配置</a></li>
+</ul>
+<p>在我们启动了mongodb之后。可以考虑来安装运行app.js的依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm i express body-parser morgan mongodb</span><br><span class="line">&#x2F;&#x2F;安装完成后尝试运行</span><br><span class="line">node app.js</span><br></pre></td></tr></table></figure>
+<p>访问<a href="http://ip:8080/#/就可以在网页看到网上的效果" target="_blank" rel="noopener">http://ip:8080/#/就可以在网页看到网上的效果</a></p>
+<p>但是这个时候，我们所有的交互数据都出现了问题，报下面这个错误</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4958474-91772392d7e628b7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="error.png"></p>
+<p>这是因为我们发送的请求loacalhost并不是我们现在的服务器ip，所以连接的不是服务器数据库，被拒绝，需要修改成</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;119.29.208.124:8080&#x2F;createBook</span><br><span class="line">http:&#x2F;&#x2F;119.29.208.124:8080&#x2F;book-list</span><br></pre></td></tr></table></figure>
+<p>然后重新打包，打包之后上传git再拉下来更新，就发现我们可以正常录入信息到数据库了，作为在服务器上运行的项目，肯定是希望他在服务器上永久运行，所以可以安装pm2或者forever等工具使得项目永久在服务器上运行</p>
+<p>由于我的服务器原因，下载pm2老是失败，所以我选择了forever</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm i forever g</span><br><span class="line">forever start app.js</span><br></pre></td></tr></table></figure>
+<p>常用命令如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ npm install forever -g   #安装</span><br><span class="line">$ forever start app.js          #启动</span><br><span class="line">$ forever stop app.js           #关闭</span><br><span class="line">$ forever start -l forever.log -o out.log -e err.log app.js   #输出日志和错误</span><br></pre></td></tr></table></figure>
+<p>然后你就可以推出当前目录去做其他事情了</p>
+<p>讲道理，这个项目现在已经可以在服务器自主运行，终于完结撒花了</p>
+<p>最后附上github地址</p>
+<p><a href="https://github.com/decadeheart/vue-example.git" target="_blank" rel="noopener">https://github.com/decadeheart/vue-example.git</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>打赏一瓶冰阔落，马上继续又创作</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Decade 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Decade 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue/" rel="tag"># vue</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/10/19/linux%E3%80%81nginx%E3%80%81php%E3%80%81mysql%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%90%AD%E5%BB%BAwordpress%E5%8D%9A%E5%AE%A2/" rel="next" title="linux、nginx、php、mysql环境下搭建wordpress博客">
+                <i class="fa fa-chevron-left"></i> linux、nginx、php、mysql环境下搭建wordpress博客
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "1",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      },
+      "slide": {
+        "bdImg": "5",
+        "bdPos": "left",
+        "bdTop": "100"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/123.jpg"
+                alt="Decade" />
+            
+              <p class="site-author-name" itemprop="name">Decade</p>
+              <p class="site-description motion-element" itemprop="description">Art life technology</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://github.com/decadeheart" title="MyGithub" target="_blank">MyGithub</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.jianshu.com/u/daa5c20df567" title="简书" target="_blank">简书</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.csdn.net/m0_37993122" title="CSDN" target="_blank">CSDN</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境前提"><span class="nav-number">1.</span> <span class="nav-text">环境前提</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-vue-cli快速搭建项目"><span class="nav-number">2.</span> <span class="nav-text">1.vue-cli快速搭建项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-完成本地环境下项目开发"><span class="nav-number">3.</span> <span class="nav-text">2.完成本地环境下项目开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1统一部分编写"><span class="nav-number">3.1.</span> <span class="nav-text">2.1统一部分编写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2创建首页组件"><span class="nav-number">3.2.</span> <span class="nav-text">2.2创建首页组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3创建通用部分组件"><span class="nav-number">3.3.</span> <span class="nav-text">2.3创建通用部分组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4创建录入书籍页面"><span class="nav-number">3.4.</span> <span class="nav-text">2.4创建录入书籍页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5完成数据交互"><span class="nav-number">3.5.</span> <span class="nav-text">2.5完成数据交互</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6创建数据展示组建-列表页"><span class="nav-number">3.6.</span> <span class="nav-text">2.6创建数据展示组建-列表页</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-完成服务器环境下的项目开发"><span class="nav-number">4.</span> <span class="nav-text">3.完成服务器环境下的项目开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1首先是先将项目上传到服务器"><span class="nav-number">4.1.</span> <span class="nav-text">3.1首先是先将项目上传到服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2安装服务器上的依赖"><span class="nav-number">4.2.</span> <span class="nav-text">3.2安装服务器上的依赖</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Decade</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+<!-- 页面点击小红心 -->
+<script>
+!function(e,t,a){function n(){c(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"),o(),r()}function r(){for(var e=0;e<d.length;e++)d[e].alpha<=0?(t.body.removeChild(d[e].el),d.splice(e,1)):(d[e].y--,d[e].scale+=.004,d[e].alpha-=.013,d[e].el.style.cssText="left:"+d[e].x+"px;top:"+d[e].y+"px;opacity:"+d[e].alpha+";transform:scale("+d[e].scale+","+d[e].scale+") rotate(45deg);background:"+d[e].color+";z-index:99999");requestAnimationFrame(r)}function o(){var t="function"==typeof e.onclick&&e.onclick;e.οnclick=function(e){t&&t(),i(e)}}function i(e){var a=t.createElement("div");a.className="heart",d.push({el:a,x:e.clientX-5,y:e.clientY-5,scale:1,alpha:1,color:s()}),t.body.appendChild(a)}function c(e){var a=t.createElement("style");a.type="text/css";try{a.appendChild(t.createTextNode(e))}catch(t){a.styleSheet.cssText=e}t.getElementsByTagName("head")[0].appendChild(a)}function s(){return"rgb("+~~(255*Math.random())+","+~~(255*Math.random())+","+~~(255*Math.random())+")"}var d=[];e.requestAnimationFrame=function(){return e.requestAnimationFrame||e.webkitRequestAnimationFrame||e.mozRequestAnimationFrame||e.oRequestAnimationFrame||e.msRequestAnimationFrame||function(e){setTimeout(e,1e3/60)}}(),n()}(window,document);
+</script>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'NaBwvMqdLVLG82M69a2emYPY-gzGzoHsz',
+        appKey: 'o9EiQOCxo0JyWx9yFHyroU9H',
+        placeholder: '本站开启了评论邮件提醒功能，在上方邮箱输入框留下邮箱，可以即时收到恢复哦！',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("NaBwvMqdLVLG82M69a2emYPY-gzGzoHsz", "o9EiQOCxo0JyWx9yFHyroU9H");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

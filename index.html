@@ -304,6 +304,355 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://decadeheart.github.io/2020/10/19/vue%E3%80%81webpack%E3%80%81express%E3%80%81mongodb%E6%90%AD%E5%BB%BA%E7%AE%80%E5%8D%95%E8%B7%91%E9%80%9A%E5%85%A8%E6%A0%88%E9%A1%B9%E7%9B%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Decade">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/123.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="擎烛而走">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/10/19/vue%E3%80%81webpack%E3%80%81express%E3%80%81mongodb%E6%90%AD%E5%BB%BA%E7%AE%80%E5%8D%95%E8%B7%91%E9%80%9A%E5%85%A8%E6%A0%88%E9%A1%B9%E7%9B%AE/" itemprop="url">vue、webpack、express、mongodb搭建简单跑通全栈项目</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-19T09:58:47+08:00">
+                2020-10-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BB%BA%E7%AB%99/" itemprop="url" rel="index">
+                    <span itemprop="name">建站</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/10/19/vue%E3%80%81webpack%E3%80%81express%E3%80%81mongodb%E6%90%AD%E5%BB%BA%E7%AE%80%E5%8D%95%E8%B7%91%E9%80%9A%E5%85%A8%E6%A0%88%E9%A1%B9%E7%9B%AE/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/10/19/vue%E3%80%81webpack%E3%80%81express%E3%80%81mongodb%E6%90%AD%E5%BB%BA%E7%AE%80%E5%8D%95%E8%B7%91%E9%80%9A%E5%85%A8%E6%A0%88%E9%A1%B9%E7%9B%AE/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/10/19/vue%E3%80%81webpack%E3%80%81express%E3%80%81mongodb%E6%90%AD%E5%BB%BA%E7%AE%80%E5%8D%95%E8%B7%91%E9%80%9A%E5%85%A8%E6%A0%88%E9%A1%B9%E7%9B%AE/" class="leancloud_visitors" data-flag-title="vue、webpack、express、mongodb搭建简单跑通全栈项目">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+
+本文会使用vue搭建一个简单单页应用，并且使用webpack打包，使用express框架服务，并使用mongodb管理数据存储，在服务器端部署，可以实现ip访问
+
+项目效果预览
+http://119.29.208.124:8080/#/
+环境前提 Node.js (&gt;=4.x, 6.x p
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/10/19/vue%E3%80%81webpack%E3%80%81express%E3%80%81mongodb%E6%90%AD%E5%BB%BA%E7%AE%80%E5%8D%95%E8%B7%91%E9%80%9A%E5%85%A8%E6%A0%88%E9%A1%B9%E7%9B%AE/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://decadeheart.github.io/2020/10/19/linux%E3%80%81nginx%E3%80%81php%E3%80%81mysql%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%90%AD%E5%BB%BAwordpress%E5%8D%9A%E5%AE%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Decade">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/123.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="擎烛而走">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/10/19/linux%E3%80%81nginx%E3%80%81php%E3%80%81mysql%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%90%AD%E5%BB%BAwordpress%E5%8D%9A%E5%AE%A2/" itemprop="url">linux、nginx、php、mysql环境下搭建wordpress博客</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-10-19T09:57:00+08:00">
+                2020-10-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BB%BA%E7%AB%99/" itemprop="url" rel="index">
+                    <span itemprop="name">建站</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/10/19/linux%E3%80%81nginx%E3%80%81php%E3%80%81mysql%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%90%AD%E5%BB%BAwordpress%E5%8D%9A%E5%AE%A2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/10/19/linux%E3%80%81nginx%E3%80%81php%E3%80%81mysql%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%90%AD%E5%BB%BAwordpress%E5%8D%9A%E5%AE%A2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/10/19/linux%E3%80%81nginx%E3%80%81php%E3%80%81mysql%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%90%AD%E5%BB%BAwordpress%E5%8D%9A%E5%AE%A2/" class="leancloud_visitors" data-flag-title="linux、nginx、php、mysql环境下搭建wordpress博客">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+之前写过一篇，腾讯云+wordpress搭建个人博客，但是是使用amh面板，简单粗暴构建的，其实amh面板也是集成了nginx，mysql，php，所以这次使用了原始的方法，构建了一下个人博客
+
+1.数据库的安装及配置安装方式
+1yum -y install mysql mysql-server
+
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/10/19/linux%E3%80%81nginx%E3%80%81php%E3%80%81mysql%E7%8E%AF%E5%A2%83%E4%B8%8B%E6%90%AD%E5%BB%BAwordpress%E5%8D%9A%E5%AE%A2/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://decadeheart.github.io/2020/09/07/webrtc/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1190,7 +1539,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1201,7 +1550,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1212,7 +1561,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
