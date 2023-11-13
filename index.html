@@ -54,7 +54,7 @@
 	<h1>31天纪念日快乐！！！！</h2>
         <h2>巡哥哥和笑笑宝贝已经在一起了</h2>
         <div class="timer">
-            <b>31</b> Days <b id="h"></b> Hours <b id="m"></b> Minutes <b id="s"></b> Seconds
+            <b id="d"></b> Days <b id="h"></b> Hours <b id="m"></b> Minutes <b id="s"></b> Seconds
         </div>
     </div>
     <div class="cs">
@@ -78,7 +78,8 @@
                 s = "0" + s;
             }
 
-	    console.log(t / 1000 / 60 / 60 / 24)
+	    console.log(~~(t / 1000 / 60 / 60 / 24))
+	    document.getElementById('d').innerHTML = ~~(t / 1000 / 60 / 60 / 24);
             document.getElementById('h').innerHTML = h;
             document.getElementById('m').innerHTML = m;
             document.getElementById('s').innerHTML = s;
