@@ -39,6 +39,12 @@
         .timer b {
             color: rgb(253, 99, 125);
         }
+	 .cs {
+            width: 100%;
+            margin: 0 auto;
+            position: absolute;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -49,10 +55,10 @@
         <div class="timer">
             <b>31</b> Days <b id="h"></b> Hours <b id="m"></b> Minutes <b id="s"></b> Seconds
         </div>
-	<div class="cs">
+    </div>
+<div class="cs">
     <img src='https://s3.bmp.ovh/imgs/2023/11/14/38b188da38018a20.jpg' id="logo">
 </div>
-    </div>
     <script language="javascript">
         function timer() {
           window.setTimeout("show_date_time()", 1000);
