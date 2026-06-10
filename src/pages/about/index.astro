@@ -1,0 +1,48 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { SITE } from '~/config';
+---
+
+<BaseLayout title="关于" description={`关于 ${SITE.author}`}>
+  <section class="page container">
+    <h1 class="page-title">关于我</h1>
+
+    <div class="prose">
+      <p>你好，我是 <strong>Decade</strong>。</p>
+
+      <p>
+        擎烛而走，虽千万里，吾往矣。这里是我的个人博客，记录一些技术学习、研究心得，
+        以及偶尔的旅行随笔。
+      </p>
+
+      <h2>背景</h2>
+      <ul>
+        <li>华中科技大学，PhD 在读</li>
+        <li>研究方向：音视频、室内定位、Web 全栈</li>
+      </ul>
+
+      <h2>联系方式</h2>
+      <ul>
+        <li>Email: <a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+        <li>GitHub: <a href={SITE.github} target="_blank" rel="noopener">@decadeheart</a></li>
+      </ul>
+
+      <h2>关于本站</h2>
+      <p>
+        本站使用 <a href="https://astro.build" target="_blank" rel="noopener">Astro</a>
+        构建，部署在 GitHub Pages 上，源码开源。
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page { padding-top: 3rem; }
+  .page-title { font-size: 1.75rem; margin: 0 0 1.5rem; }
+  .prose h2 {
+    margin-top: 2rem;
+    font-size: 1.2rem;
+  }
+  .prose ul { padding-left: 1.4em; }
+  .prose li { margin: 0.3em 0; }
+</style>

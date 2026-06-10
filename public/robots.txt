@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://decadeheart.github.io/sitemap-index.xml

@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+
+const posts = await getCollection('posts', ({ data }) => !data.draft);
+
+const tagCounts = new Map<string, number>();
+for (const post of posts) {
+  for (const t of post.data.tags ?? []) {
+    tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1);
+  }
+}
+
+const tags = Array.from(tagCounts.entries()).sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout title="标签" description="按标签浏览文章">
+  <section class="page container">
+    <h1 class="page-title">标签</h1>
+    <p class="page-sub">共 {tags.length} 个标签</p>
+
+    <div class="cloud">
+      {
+        tags.map(([name, count]) => (
+          <a class="chip" href={`/tags/${name}/`}>
+            <span class="name">#{name}</span>
+            <span class="count">{count}</span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page { padding-top: 3rem; }
+  .page-title { font-size: 1.75rem; margin: 0 0 0.3rem; }
+  .page-sub {
+    color: var(--text-subtle);
+    margin: 0 0 1.5rem;
+    font-size: 0.9rem;
+  }
+  .cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    transition: all var(--transition);
+  }
+  .chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .count {
+    font-size: 0.75rem;
+    color: var(--text-subtle);
+  }
+</style>

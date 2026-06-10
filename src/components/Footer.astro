@@ -1,0 +1,45 @@
+---
+import { SITE } from '~/config';
+const year = new Date().getFullYear();
+const span = SITE.startYear === year ? `${year}` : `${SITE.startYear}–${year}`;
+---
+
+<footer class="footer">
+  <div class="container-wide footer-inner">
+    <div class="footer-meta">
+      <span>© {span} {SITE.author}</span>
+      <span class="dot">·</span>
+      <a href={SITE.github} target="_blank" rel="noopener">GitHub</a>
+      <span class="dot">·</span>
+      <a href={`mailto:${SITE.email}`}>Email</a>
+      <span class="dot">·</span>
+      <a href="/rss.xml">RSS</a>
+    </div>
+    <div class="footer-tag">Built with Astro</div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    margin-top: 6rem;
+    padding: 2rem 0;
+    border-top: 1px solid var(--border);
+    color: var(--text-subtle);
+    font-size: 0.85rem;
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-meta a {
+    color: var(--text-muted);
+  }
+  .footer-meta a:hover { color: var(--accent); }
+  .dot { margin: 0 0.5em; opacity: 0.5; }
+  @media (max-width: 540px) {
+    .footer-inner { justify-content: center; text-align: center; }
+  }
+</style>

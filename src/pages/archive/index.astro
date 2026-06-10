@@ -1,0 +1,84 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import FormattedDate from '~/components/FormattedDate.astro';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+const groupedByYear = posts.reduce<Record<string, typeof posts>>((acc, p) => {
+  const y = String(p.data.date.getFullYear());
+  (acc[y] ||= []).push(p);
+  return acc;
+}, {});
+
+const years = Object.keys(groupedByYear).sort((a, b) => Number(b) - Number(a));
+---
+
+<BaseLayout title="归档" description="按年份归档的全部文章">
+  <section class="page container">
+    <h1 class="page-title">归档</h1>
+    <p class="page-sub">共 {posts.length} 篇文章</p>
+
+    {
+      years.map((year) => (
+        <div class="year-block">
+          <h2 class="year">{year}</h2>
+          <ul class="year-list">
+            {groupedByYear[year].map((post) => (
+              <li class="row">
+                <FormattedDate date={post.data.date} format="short" />
+                <a href={`/posts/${post.data.slug ?? post.id}/`}>{post.data.title}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </section>
+</BaseLayout>
+
+<style>
+  .page { padding-top: 3rem; }
+  .page-title { font-size: 1.75rem; margin: 0 0 0.3rem; }
+  .page-sub {
+    color: var(--text-subtle);
+    margin: 0 0 2rem;
+    font-size: 0.9rem;
+  }
+  .year-block { margin-bottom: 2.5rem; }
+  .year {
+    font-size: 1.5rem;
+    color: var(--accent);
+    margin: 0 0 0.8rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .year-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .row {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .row :global(time) {
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    min-width: 5.5rem;
+  }
+  .row a {
+    color: var(--text);
+  }
+  .row a:hover { color: var(--accent); }
+
+  @media (max-width: 540px) {
+    .row { flex-direction: column; gap: 0.2rem; }
+  }
+</style>

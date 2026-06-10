@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PostCard from '~/components/PostCard.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  const cats = new Set<string>();
+  for (const p of posts) if (p.data.category) cats.add(p.data.category);
+  return Array.from(cats).map((category) => ({
+    params: { category },
+    props: {
+      posts: posts
+        .filter((p) => p.data.category === category)
+        .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
+    },
+  }));
+}
+
+const { category } = Astro.params;
+const { posts } = Astro.props as { posts: Awaited<ReturnType<typeof getCollection<'posts'>>> };
+---
+
+<BaseLayout title={`分类: ${category}`} description={`分类「${category}」下的文章`}>
+  <section class="page container">
+    <p class="back"><a href="/categories/">← 所有分类</a></p>
+    <h1 class="page-title">{category}</h1>
+    <p class="page-sub">{posts.length} 篇文章</p>
+    <div class="post-list">
+      {posts.map((post) => <PostCard post={post} />)}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page { padding-top: 2.5rem; }
+  .back { margin: 0 0 1rem; font-size: 0.85rem; }
+  .back a { color: var(--text-muted); }
+  .back a:hover { color: var(--accent); }
+  .page-title { font-size: 1.75rem; margin: 0 0 0.3rem; color: var(--accent); }
+  .page-sub {
+    color: var(--text-subtle);
+    margin: 0 0 1.5rem;
+    font-size: 0.9rem;
+  }
+  .post-list { border-top: 1px solid var(--border); }
+</style>

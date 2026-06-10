@@ -1,0 +1,73 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+}
+const { post } = Astro.props;
+const href = `/posts/${post.data.slug ?? post.id}/`;
+---
+
+<article class="card">
+  <div class="card-meta">
+    <FormattedDate date={post.data.date} />
+    {post.data.category && (
+      <>
+        <span class="sep">·</span>
+        <span class="cat">{post.data.category}</span>
+      </>
+    )}
+  </div>
+  <h2 class="card-title">
+    <a href={href}>{post.data.title}</a>
+  </h2>
+  {post.data.description && (
+    <p class="card-excerpt">{post.data.description}</p>
+  )}
+  {post.data.tags?.length > 0 && (
+    <div class="card-tags">
+      {post.data.tags.map((t) => (
+        <span class="tag">#{t}</span>
+      ))}
+    </div>
+  )}
+</article>
+
+<style>
+  .card {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .card:last-of-type { border-bottom: 0; }
+  .card-meta {
+    font-size: 0.85rem;
+    color: var(--text-subtle);
+    margin-bottom: 0.4rem;
+  }
+  .sep { margin: 0 0.5em; opacity: 0.5; }
+  .cat { color: var(--text-muted); }
+  .card-title {
+    font-size: 1.35rem;
+    margin: 0 0 0.5rem;
+    line-height: 1.35;
+  }
+  .card-title a {
+    color: var(--text);
+  }
+  .card-title a:hover { color: var(--accent); }
+  .card-excerpt {
+    color: var(--text-muted);
+    margin: 0 0 0.6rem;
+    font-size: 0.95rem;
+  }
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .tag {
+    color: var(--text-subtle);
+    font-size: 0.8rem;
+  }
+</style>

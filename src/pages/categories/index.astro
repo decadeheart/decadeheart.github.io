@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+
+const posts = await getCollection('posts', ({ data }) => !data.draft);
+const catCounts = new Map<string, number>();
+for (const post of posts) {
+  if (post.data.category) {
+    catCounts.set(post.data.category, (catCounts.get(post.data.category) ?? 0) + 1);
+  }
+}
+const cats = Array.from(catCounts.entries()).sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout title="分类" description="按分类浏览文章">
+  <section class="page container">
+    <h1 class="page-title">分类</h1>
+    <p class="page-sub">共 {cats.length} 个分类</p>
+
+    <ul class="cat-list">
+      {
+        cats.map(([name, count]) => (
+          <li>
+            <a href={`/categories/${name}/`}>
+              <span class="name">{name}</span>
+              <span class="count">{count} 篇</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .page { padding-top: 3rem; }
+  .page-title { font-size: 1.75rem; margin: 0 0 0.3rem; }
+  .page-sub {
+    color: var(--text-subtle);
+    margin: 0 0 1.5rem;
+    font-size: 0.9rem;
+  }
+  .cat-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .cat-list li {
+    border-bottom: 1px solid var(--border);
+  }
+  .cat-list a {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    color: var(--text);
+  }
+  .cat-list a:hover .name { color: var(--accent); }
+  .name { font-size: 1.05rem; font-weight: 500; }
+  .count {
+    color: var(--text-subtle);
+    font-size: 0.85rem;
+  }
+</style>

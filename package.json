@@ -1,0 +1,31 @@
+{
+  "name": "decadeheart-blog",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.0.0",
+    "@astrojs/rss": "^4.0.0",
+    "@astrojs/sitemap": "^3.2.0",
+    "astro": "^5.0.0"
+  },
+  "devDependencies": {
+    "node-html-parser": "^7.1.0",
+    "turndown": "^7.2.4",
+    "typescript": "^5.6.0"
+  },
+  "homepage": "https://github.com/decadeheart/decadeheart.github.io#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decadeheart/decadeheart.github.io.git"
+  },
+  "bugs": {
+    "url": "https://github.com/decadeheart/decadeheart.github.io/issues"
+  }
+}
