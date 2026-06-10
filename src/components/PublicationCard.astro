@@ -1,0 +1,192 @@
+---
+import type { Publication } from '~/data/publications';
+
+interface Props {
+  pub: Publication;
+}
+const { pub } = Astro.props;
+
+const typeLabel: Record<Publication['type'], string> = {
+  journal: 'Journal',
+  conference: 'Conference',
+  preprint: 'Preprint',
+};
+
+const doiUrl = pub.doi ? `https://doi.org/${pub.doi}` : null;
+const arxivUrl = pub.arxiv ? `https://arxiv.org/abs/${pub.arxiv}` : null;
+const firstAuthor = pub.authors[0]?.me === true;
+---
+
+<article class="pub" id={pub.id}>
+  <header class="pub-head">
+    <div class="badges">
+      {pub.venueShort && <span class="badge venue">{pub.venueShort}</span>}
+      <span class={`badge type type-${pub.type}`}>{typeLabel[pub.type]}</span>
+      {firstAuthor && <span class="badge first">一作</span>}
+      {pub.citations != null && pub.citations > 0 && (
+        <span class="badge cite">{pub.citations} citations</span>
+      )}
+    </div>
+    <h2 class="pub-title">
+      {doiUrl ? (
+        <a href={doiUrl} target="_blank" rel="noopener">{pub.title}</a>
+      ) : (
+        pub.title
+      )}
+    </h2>
+  </header>
+
+  <p class="pub-authors">
+    {pub.authors.map((au, i) => (
+      <>
+        <span class:list={['author', { 'is-me': au.me }]}>{au.name}</span>
+        {i < pub.authors.length - 1 && <span class="comma">, </span>}
+      </>
+    ))}
+  </p>
+
+  <p class="pub-venue">
+    <span class="venue-name">{pub.venue}</span>
+    <span class="year">· {pub.year}</span>
+  </p>
+
+  {pub.abstract && <p class="pub-abstract">{pub.abstract}</p>}
+
+  <div class="pub-links">
+    {doiUrl && (
+      <a class="link" href={doiUrl} target="_blank" rel="noopener">DOI</a>
+    )}
+    {arxivUrl && (
+      <a class="link" href={arxivUrl} target="_blank" rel="noopener">arXiv</a>
+    )}
+    {pub.pdf && (
+      <a class="link" href={pub.pdf} target="_blank" rel="noopener">PDF</a>
+    )}
+    {pub.url && (
+      <a class="link" href={pub.url} target="_blank" rel="noopener">Link</a>
+    )}
+    {pub.doi && (
+      <button
+        class="link cite-btn"
+        type="button"
+        data-bibtex-id={pub.id}
+        data-doi={pub.doi}
+      >
+        Cite
+      </button>
+    )}
+  </div>
+</article>
+
+<style>
+  .pub {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .pub:last-of-type { border-bottom: 0; }
+
+  .badges {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.72rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .venue {
+    background: var(--accent);
+    color: #fff;
+  }
+  .type {
+    background: var(--bg-subtle);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+  .type-conference {
+    background: var(--bg-subtle);
+    color: var(--text-muted);
+  }
+  .first {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+  }
+  .cite {
+    background: transparent;
+    color: var(--text-subtle);
+    border: 1px solid var(--border);
+  }
+
+  .pub-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0 0 0.5rem;
+  }
+  .pub-title a {
+    color: var(--text);
+  }
+  .pub-title a:hover {
+    color: var(--accent);
+  }
+
+  .pub-authors {
+    margin: 0 0 0.25rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .author.is-me {
+    color: var(--text);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1.5px;
+  }
+  .comma { color: var(--text-subtle); }
+
+  .pub-venue {
+    margin: 0 0 0.6rem;
+    font-size: 0.88rem;
+    color: var(--text-subtle);
+  }
+  .venue-name { font-style: italic; }
+  .year { margin-left: 0.3em; }
+
+  .pub-abstract {
+    margin: 0 0 0.8rem;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .pub-links {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .link {
+    display: inline-block;
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    background: transparent;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    transition: all var(--transition);
+  }
+  .link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+</style>

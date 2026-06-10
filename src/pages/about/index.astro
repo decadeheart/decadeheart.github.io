@@ -1,48 +1,393 @@
 ---
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import { SITE } from '~/config';
+import { PUBLICATIONS, SCHOLAR_METRICS } from '~/data/publications';
+
+const APPOINTMENTS = [
+  {
+    period: '2026.06 – Present',
+    role: 'Assistant Professor (Incoming)',
+    org: 'Tohoku University',
+    orgZh: '日本东北大学',
+    dept: 'Kato Laboratory, Graduate School of Information Sciences',
+    location: 'Sendai, Japan',
+    note: '即将入职',
+  },
+];
+
+const EDUCATIONS = [
+  {
+    period: '2022.09 – 2026.06',
+    role: 'Ph.D. in Computer Science',
+    org: 'Central South University',
+    orgZh: '中南大学',
+    dept: 'School of Computer Science and Engineering',
+    location: 'Changsha, China',
+    honor: 'Principal’s Innovation Award (校长创新奖)',
+  },
+  {
+    period: '2024.03 – 2026.03',
+    role: 'Visiting Research Student',
+    org: 'Tohoku University',
+    orgZh: '日本东北大学',
+    dept: 'Kato Laboratory, Graduate School of Information Sciences',
+    location: 'Sendai, Japan',
+    honor: null,
+  },
+  {
+    period: '2020.09 – 2022.06',
+    role: 'M.Eng. in Computer Science',
+    org: 'Huazhong University of Science and Technology',
+    orgZh: '华中科技大学',
+    dept: 'School of Computer Science and Technology',
+    location: 'Wuhan, China',
+    honor: 'Outstanding Graduate (优秀毕业生)',
+  },
+  {
+    period: '2015.09 – 2019.06',
+    role: 'B.Eng. in Software Engineering',
+    org: 'Huazhong University of Science and Technology',
+    orgZh: '华中科技大学',
+    dept: 'School of Software Engineering',
+    location: 'Wuhan, China',
+    honor: 'Outstanding Graduate (优秀毕业生)',
+  },
+];
+
+const INTERESTS = [
+  'Network Performance Evaluation',
+  'Causal Inference',
+  'Space-Air-Ground Integrated Network (SAGIN)',
+  'LLM for Networking',
+  '6G / THz Communications',
+  'Federated Learning',
+];
+
+const firstAuthored = PUBLICATIONS.filter((p) => p.authors[0]?.me).length;
 ---
 
-<BaseLayout title="关于" description={`关于 ${SITE.author}`}>
+<BaseLayout title="关于 · About" description={SITE.description}>
   <section class="page container">
-    <h1 class="page-title">关于我</h1>
+    <div class="intro">
+      <div class="intro-text">
+        <p class="hello">Hi, I&apos;m</p>
+        <h1 class="name">
+          <span class="name-en">Xun Yuan</span>
+          <span class="name-zh">袁迅</span>
+        </h1>
+        <p class="role-tag">
+          <span class="pill">Incoming Assistant Professor</span>
+          <span class="role-aff">@ Tohoku University · 日本东北大学</span>
+        </p>
+        <p class="aka">网络上一直叫 <strong>Decade</strong>。</p>
+        <p class="tagline">
+          将于 2026 年 6 月入职日本东北大学信息科学研究科 Kato Lab 担任助理教授（Assistant Professor），
+          此前于中南大学计算机学院完成博士学位（2022–2026），研究方向为
+          <em>网络性能评估、因果推断、空天地一体化网络与 LLM 辅助的网络管理</em>。
+        </p>
+        <div class="quick-links">
+          <a class="btn primary" href={`mailto:${SITE.email}`}>Email</a>
+          <a class="btn" href="/publications/">论文 ({PUBLICATIONS.length})</a>
+          <a class="btn" href="/resume/">CV</a>
+          <a class="btn" href={SITE.orcid} target="_blank" rel="noopener">ORCID</a>
+          <a class="btn" href={SITE.scholar} target="_blank" rel="noopener">Scholar</a>
+          <a class="btn" href={SITE.github} target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+    </div>
 
-    <div class="prose">
-      <p>你好，我是 <strong>Decade</strong>。</p>
-
+    <section class="block">
+      <h2>About</h2>
       <p>
-        擎烛而走，虽千万里，吾往矣。这里是我的个人博客，记录一些技术学习、研究心得，
-        以及偶尔的旅行随笔。
+        我将于 2026 年 6 月入职日本东北大学（Tohoku University）信息科学研究科 Kato Laboratory，
+        担任助理教授（Assistant Professor），延续在攻读博士期间已开展的合作研究。
       </p>
+      <p>
+        博士阶段就读于中南大学计算机学院（2022–2026），获校长创新奖；
+        2024 年起以联合培养的方式在东北大学 Kato Lab 任 Research Student，
+        围绕空天地一体化网络（SAGIN）的多频段通信、基于因果推断的网络性能评估，
+        以及大语言模型辅助的端到端网络健康管理等方向开展工作，
+        相关成果已发表于 IEEE TMC / TON / TWC / TETC / ICC 等期刊与会议。
+      </p>
+      <p>
+        硕士及本科均毕业于华中科技大学计算机科学与技术学院、软件工程学院，两次获评优秀毕业生。
+      </p>
+      <p>
+        工作之外，喜欢徒步、写代码、记录生活，这个博客的另一面就在
+        <a href="/posts/">/posts</a> 与 <a href="/archive/">/archive</a>。
+      </p>
+    </section>
 
-      <h2>背景</h2>
-      <ul>
-        <li>华中科技大学，PhD 在读</li>
-        <li>研究方向：音视频、室内定位、Web 全栈</li>
+    <section class="block">
+      <h2>Research Interests</h2>
+      <div class="chips">
+        {INTERESTS.map((i) => <span class="chip">{i}</span>)}
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>Appointments</h2>
+      <ul class="timeline">
+        {
+          APPOINTMENTS.map((a) => (
+            <li class="item">
+              <div class="item-period">{a.period}</div>
+              <div class="item-body">
+                <div class="item-role">
+                  {a.role}
+                  {a.note && <span class="incoming">· {a.note}</span>}
+                </div>
+                <div class="item-org">
+                  <strong>{a.org}</strong>
+                  <span class="org-zh"> · {a.orgZh}</span>
+                </div>
+                <div class="item-dept">{a.dept} · {a.location}</div>
+              </div>
+            </li>
+          ))
+        }
       </ul>
+    </section>
 
-      <h2>联系方式</h2>
-      <ul>
+    <section class="block">
+      <h2>Education</h2>
+      <ul class="timeline">
+        {
+          EDUCATIONS.map((e) => (
+            <li class="item">
+              <div class="item-period">{e.period}</div>
+              <div class="item-body">
+                <div class="item-role">{e.role}</div>
+                <div class="item-org">
+                  <strong>{e.org}</strong>
+                  <span class="org-zh"> · {e.orgZh}</span>
+                </div>
+                <div class="item-dept">{e.dept} · {e.location}</div>
+                {e.honor && <div class="item-honor">🏅 {e.honor}</div>}
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="block">
+      <h2>Snapshot</h2>
+      <ul class="snapshot">
+        <li><strong>{PUBLICATIONS.length}</strong> 篇已发表论文（其中 <strong>{firstAuthored}</strong> 篇一作）</li>
+        <li><strong>{SCHOLAR_METRICS.citations}</strong>+ 引用 · h-index <strong>{SCHOLAR_METRICS.hIndex}</strong> · i10 <strong>{SCHOLAR_METRICS.i10Index}</strong></li>
+        <li>主要会议/期刊：IEEE <strong>TMC</strong> / <strong>TON</strong> / <strong>TWC</strong> / <strong>TETC</strong> / <strong>ICC</strong></li>
+        <li>详见 <a href="/publications/">Publications</a></li>
+      </ul>
+    </section>
+
+    <section class="block">
+      <h2>Contact</h2>
+      <ul class="contact">
         <li>Email: <a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+        <li>ORCID: <a href={SITE.orcid} target="_blank" rel="noopener">0000-0002-2248-788X</a></li>
+        <li>Google Scholar: <a href={SITE.scholar} target="_blank" rel="noopener">profile</a></li>
         <li>GitHub: <a href={SITE.github} target="_blank" rel="noopener">@decadeheart</a></li>
       </ul>
+    </section>
 
+    <section class="block">
       <h2>关于本站</h2>
       <p>
         本站使用 <a href="https://astro.build" target="_blank" rel="noopener">Astro</a>
-        构建，部署在 GitHub Pages 上，源码开源。
+        构建,部署在 GitHub Pages。源码与文章 Markdown 均开源,见
+        <a href={`${SITE.github}/decadeheart.github.io`} target="_blank" rel="noopener">仓库</a>。
       </p>
-    </div>
+    </section>
   </section>
 </BaseLayout>
 
 <style>
-  .page { padding-top: 3rem; }
-  .page-title { font-size: 1.75rem; margin: 0 0 1.5rem; }
-  .prose h2 {
-    margin-top: 2rem;
-    font-size: 1.2rem;
+  .page { padding-top: 3rem; max-width: 880px; }
+
+  .intro { margin-bottom: 2.5rem; }
+  .hello {
+    color: var(--text-subtle);
+    margin: 0 0 0.3rem;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
   }
-  .prose ul { padding-left: 1.4em; }
-  .prose li { margin: 0.3em 0; }
+  .name {
+    margin: 0 0 0.5rem;
+    line-height: 1.1;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .name-en {
+    font-size: 2.4rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--text) 40%, var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .name-zh {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .aka {
+    color: var(--text-muted);
+    margin: 0 0 1rem;
+    font-size: 0.95rem;
+  }
+  .role-tag {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 0 0 0.6rem;
+    font-size: 0.92rem;
+  }
+  .pill {
+    display: inline-flex;
+    padding: 3px 12px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+  }
+  .role-aff {
+    color: var(--text-muted);
+  }
+  .incoming {
+    margin-left: 0.4em;
+    font-weight: 500;
+    font-size: 0.78rem;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    padding: 1px 8px;
+    border-radius: 999px;
+  }
+  .tagline {
+    color: var(--text);
+    margin: 0 0 1.2rem;
+    line-height: 1.75;
+  }
+  .tagline em {
+    color: var(--accent);
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  .quick-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    transition: all var(--transition);
+  }
+  .btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .btn.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .btn.primary:hover {
+    background: var(--accent-hover);
+    color: #fff;
+  }
+
+  .block {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .block h2 {
+    font-size: 1.2rem;
+    margin: 0 0 1rem;
+    color: var(--text);
+  }
+  .block p { line-height: 1.8; color: var(--text); }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .chip {
+    display: inline-flex;
+    padding: 5px 12px;
+    border-radius: 6px;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .item {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 1.25rem;
+    padding: 1rem 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .item:last-child { border-bottom: 0; }
+  .item-period {
+    color: var(--text-subtle);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding-top: 2px;
+  }
+  .item-role {
+    font-weight: 600;
+    margin-bottom: 0.1rem;
+  }
+  .item-org { font-size: 0.95rem; }
+  .org-zh { color: var(--text-muted); }
+  .item-dept {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 0.2rem;
+  }
+  .item-honor {
+    color: var(--accent);
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+  }
+
+  .snapshot, .contact {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .snapshot li, .contact li {
+    padding: 0.4rem 0;
+    color: var(--text);
+  }
+  .snapshot strong { color: var(--accent); }
+
+  @media (max-width: 640px) {
+    .name-en { font-size: 1.9rem; }
+    .name-zh { font-size: 1.2rem; }
+    .item {
+      grid-template-columns: 1fr;
+      gap: 0.3rem;
+    }
+  }
 </style>

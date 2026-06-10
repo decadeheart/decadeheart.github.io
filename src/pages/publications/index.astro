@@ -1,0 +1,163 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PublicationCard from '~/components/PublicationCard.astro';
+import { PUBLICATIONS, SCHOLAR_METRICS } from '~/data/publications';
+import { SITE } from '~/config';
+
+const sorted = [...PUBLICATIONS].sort((a, b) => {
+  if (b.year !== a.year) return b.year - a.year;
+  return (b.month ?? 0) - (a.month ?? 0);
+});
+
+const groupedByYear = sorted.reduce<Record<number, typeof sorted>>((acc, p) => {
+  (acc[p.year] ||= []).push(p);
+  return acc;
+}, {});
+const years = Object.keys(groupedByYear)
+  .map(Number)
+  .sort((a, b) => b - a);
+
+const firstAuthored = PUBLICATIONS.filter((p) => p.authors[0]?.me).length;
+const totalCitations = PUBLICATIONS.reduce((sum, p) => sum + (p.citations ?? 0), 0);
+---
+
+<BaseLayout
+  title="Publications · 论文"
+  description={`Xun Yuan 已发表论文列表 — ${PUBLICATIONS.length} 篇,${SCHOLAR_METRICS.citations}+ 引用`}
+>
+  <section class="page container">
+    <header class="page-head">
+      <h1 class="page-title">Publications</h1>
+      <p class="page-sub">
+        Xun Yuan · Incoming Assistant Professor, Tohoku University (2026.06)
+      </p>
+    </header>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">{PUBLICATIONS.length}</div>
+        <div class="stat-label">论文总数</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">{firstAuthored}</div>
+        <div class="stat-label">一作</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">{SCHOLAR_METRICS.citations}</div>
+        <div class="stat-label">引用</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">{SCHOLAR_METRICS.hIndex}</div>
+        <div class="stat-label">h-index</div>
+      </div>
+    </div>
+
+    <p class="external">
+      <a href={SITE.orcid} target="_blank" rel="noopener">ORCID</a>
+      <span class="dot">·</span>
+      <a href={SITE.scholar} target="_blank" rel="noopener">Google Scholar</a>
+      <span class="dot">·</span>
+      <span class="updated">数据更新于 {SCHOLAR_METRICS.lastUpdated}</span>
+    </p>
+
+    {
+      years.map((year) => (
+        <section class="year-block">
+          <h2 class="year">{year}</h2>
+          <div class="pub-list">
+            {groupedByYear[year].map((pub) => (
+              <PublicationCard pub={pub} />
+            ))}
+          </div>
+        </section>
+      ))
+    }
+  </section>
+</BaseLayout>
+
+<style>
+  .page { padding-top: 3rem; max-width: 880px; }
+  .page-head { margin-bottom: 1.5rem; }
+  .page-title {
+    font-size: 2rem;
+    margin: 0 0 0.3rem;
+  }
+  .page-sub {
+    color: var(--text-muted);
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin: 1.5rem 0 1rem;
+  }
+  .stat {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    font-family: var(--font-mono);
+  }
+  .stat-label {
+    margin-top: 0.4rem;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+
+  .external {
+    color: var(--text-subtle);
+    font-size: 0.85rem;
+    margin: 0 0 2rem;
+  }
+  .external a { color: var(--text-muted); }
+  .external a:hover { color: var(--accent); }
+  .dot { margin: 0 0.5em; opacity: 0.5; }
+  .updated { color: var(--text-subtle); }
+
+  .year-block { margin-bottom: 2.5rem; }
+  .year {
+    font-size: 1.5rem;
+    color: var(--accent);
+    margin: 0 0 0.5rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--text);
+  }
+  .pub-list { border-top: 1px solid var(--border); }
+
+  @media (max-width: 540px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .page-title { font-size: 1.6rem; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.cite-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const doi = btn.dataset.doi;
+      if (!doi) return;
+      const orig = btn.textContent;
+      btn.textContent = '…';
+      try {
+        const res = await fetch(`https://api.crossref.org/works/${doi}/transform/application/x-bibtex`);
+        if (!res.ok) throw new Error('fetch failed');
+        const bib = await res.text();
+        await navigator.clipboard.writeText(bib);
+        btn.textContent = '已复制 BibTeX';
+        setTimeout(() => (btn.textContent = orig), 1800);
+      } catch {
+        btn.textContent = '复制失败';
+        setTimeout(() => (btn.textContent = orig), 1800);
+      }
+    });
+  });
+</script>
